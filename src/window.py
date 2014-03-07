@@ -3,13 +3,14 @@ site.addsitedir(r"R:\Pipe_Repo\Users\Qurban\utilities")
 from uiContainer import uic
 from PyQt4.QtGui import *
 from PyQt4.QtCore import Qt
-
-site.addsitedir(r"R:\Pipe_Repo\Users\Hussain\packages")
 import qtify_maya_window as qtfy
+
+import auth.user as user
 
 import os
 import os.path as osp
 import sys
+import pymel.core as pc
 
 rootPath = osp.dirname(osp.dirname(__file__))
 uiPath = osp.join(rootPath, 'ui')
@@ -21,19 +22,27 @@ class Window(Form, Base):
     def __init__(self, parent=qtfy.getMayaWindow()):
         super(Window, self).__init__(parent)
         self.setupUi(self)
+        self.username = os.environ['USERNAME']
+        self.success = True
         
         self.setWindowIcon(QIcon(osp.join(iconPath, 'login.png')))
         
         self.loginButton.clicked.connect(self.login)
-        self.cancelButton.clicked.connect(self.close)
+        self.cancelButton.clicked.connect(self.closeWindow)
         
         self.setUsername()
         
     def setUsername(self):
-        username = os.environ.get('USERNAME')
-        self.usernameBox.setText(username)
+        self.usernameBox.setText(self.username)
         
     def login(self):
         password = str(self.passwordBox.text())
-        print password
-        self.close()
+        try:
+            user.login(self.username, password)
+            self.accept()
+        except:
+            pc.warning('Invalid password')
+        
+    def closeWindow(self):
+        self.hide()
+        self.reject()
