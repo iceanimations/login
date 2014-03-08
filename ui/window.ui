@@ -62,7 +62,7 @@
      <item>
       <widget class="QLineEdit" name="usernameBox">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="styleSheet">
         <string notr="true">border-width: 1px; 
@@ -76,7 +76,7 @@ padding-bottom: 2px;</string>
         <string/>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
