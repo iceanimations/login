@@ -36,9 +36,10 @@ class Window(Form, Base):
         self.usernameBox.setText(self.username)
         
     def login(self):
+        username = str(self.usernameBox.text())
         password = str(self.passwordBox.text())
         try:
-            user.login(self.username, password)
+            user.login(username, password)
             self.accept()
         except:
             pc.warning('Invalid password')
