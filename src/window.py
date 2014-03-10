@@ -31,6 +31,7 @@ class Window(Form, Base):
         self.cancelButton.clicked.connect(self.closeWindow)
         
         self.setUsername()
+        self.passwordBox.setFocus()
         
     def setUsername(self):
         self.usernameBox.setText(self.username)
