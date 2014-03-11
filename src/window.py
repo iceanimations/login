@@ -44,5 +44,6 @@ class Window(Form, Base):
             pc.warning('Invalid password')
         
     def closeWindow(self):
-        self.hide()
+        self.close()
         self.reject()
+        self.deleteLater()
