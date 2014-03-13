@@ -14,11 +14,11 @@ rootPath = osp.dirname(osp.dirname(__file__))
 uiPath = osp.join(rootPath, 'ui')
 iconPath = osp.join(rootPath, 'icons')
 
-Form, Base = uic.loadUiType(osp.join(uiPath, 'window.ui'))
-class Window(Form, Base):
+Form, Base = uic.loadUiType(osp.join(uiPath, 'dialog.ui'))
+class Dialog(Form, Base):
 
     def __init__(self, parent=qtfy.getMayaWindow()):
-        super(Window, self).__init__(parent)
+        super(Dialog, self).__init__(parent)
         self.setupUi(self)
         self.username = os.environ['USERNAME']
         self.success = True
