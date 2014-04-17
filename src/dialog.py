@@ -44,11 +44,11 @@ class Dialog(Form, Base):
     def login(self):
         username = str(self.usernameBox.text())
         password = str(self.passwordBox.text())
-        #try:
-        user.login(username, password)
-        self.accept()
-        #except:
-        #cui.showMessage(self, title='Login', msg='Invalid Password/Username combination')
+        try:
+            user.login(username, password)
+            self.accept()
+        except:
+            cui.showMessage(self, title='Login', msg='Invalid Password/Username combination')
         
     def closeWindow(self):
         self.close()
