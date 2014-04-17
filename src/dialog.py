@@ -1,14 +1,21 @@
-from uiContainer import uic
+try:
+    from uiContainer import uic
+except:
+    from PyQt4 import uic
 from PyQt4.QtGui import *
 from PyQt4.QtCore import Qt
-import qtify_maya_window as qtfy
-
+parent = None
+try:
+    import qtify_maya_window as qtfy
+    parent = qtfy.getMayaWindow()
+except:
+    pass
+from customui import ui as cui
 import auth.user as user
 
 import os
 import os.path as osp
 import sys
-import pymel.core as pc
 
 rootPath = osp.dirname(osp.dirname(__file__))
 uiPath = osp.join(rootPath, 'ui')
@@ -17,7 +24,7 @@ iconPath = osp.join(rootPath, 'icons')
 Form, Base = uic.loadUiType(osp.join(uiPath, 'dialog.ui'))
 class Dialog(Form, Base):
 
-    def __init__(self, parent=qtfy.getMayaWindow()):
+    def __init__(self, parent=parent):
         super(Dialog, self).__init__(parent)
         self.setupUi(self)
         self.username = os.environ['USERNAME']
@@ -41,7 +48,7 @@ class Dialog(Form, Base):
             user.login(username, password)
             self.accept()
         except:
-            pc.warning('Invalid password')
+            cui.showMessage(self, title='Login', msg='Invalid Password/Username combination')
         
     def closeWindow(self):
         self.close()
