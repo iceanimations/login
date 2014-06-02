@@ -44,6 +44,7 @@ class Dialog(Form, Base):
     def login(self):
         username = str(self.usernameBox.text())
         password = str(self.passwordBox.text())
+        #user.login(username, password)
         try:
             user.login(username, password)
             self.accept()
