@@ -54,4 +54,6 @@ class Dialog(Form, Base):
     def closeWindow(self):
         self.close()
         self.reject()
+
+    def closeEvent(self, event):
         self.deleteLater()
