@@ -48,8 +48,8 @@ class Dialog(Form, Base):
         try:
             user.login(username, password)
             self.accept()
-        except:
-            cui.showMessage(self, title='Login', msg='Invalid Password/Username combination')
+        except Exception, e:
+            cui.showMessage(self, title='Login', msg=str(e))
         
     def closeWindow(self):
         self.close()
