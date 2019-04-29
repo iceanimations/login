@@ -1,46 +1,46 @@
-try:
-    from uiContainer import uic
-except:
-    from PyQt4 import uic
-from PyQt4.QtGui import *
-from PyQt4.QtCore import Qt
-parent = None
-try:
-    import qtify_maya_window as qtfy
-    parent = qtfy.getMayaWindow()
-except:
-    pass
-from customui import ui as cui
-import auth.user as user
+# gui imports
+from PySide2.QtUiTools import QUiLoader
+from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import QDialog
+from PySide2.QtCore import QFile, QObject, Slot
 
+
+# nebula imports
+from nebula.auth import user
+from nebula.common import gui
+reload(gui)
+
+# python imports
 import os
-import os.path as osp
 import sys
 
-rootPath = osp.dirname(osp.dirname(__file__))
-uiPath = osp.join(rootPath, 'ui')
-iconPath = osp.join(rootPath, 'icons')
 
-Form, Base = uic.loadUiType(osp.join(uiPath, 'dialog.ui'))
-class Dialog(Form, Base):
+# construct commonly used paths
+rootPath = os.path.dirname(os.path.dirname(__file__))
+uiPath = os.path.join(rootPath, 'ui')
+iconPath = os.path.join(rootPath, 'icons')
 
-    def __init__(self, parent=parent):
+class Dialog(QObject):
+    def __init__(self, parent=gui.getMayaWindow()):
+        # get the ui form
         super(Dialog, self).__init__(parent)
-        self.setupUi(self)
+        self.form = gui.getUiForm(os.path.join(uiPath, 'dialog.ui'))
         self.username = os.environ['USERNAME']
         self.success = True
-        
-        self.setWindowIcon(QIcon(osp.join(iconPath, 'login.png')))
-        
-        self.loginButton.clicked.connect(self.login)
-        self.cancelButton.clicked.connect(self.closeWindow)
-        
+        self.setWindowIcon(QIcon(os.path.join(iconPath, 'login.png')))
         self.setUsername()
         self.passwordBox.setFocus()
-        
+
+        # connections
+        self.loginButton.clicked.connect(self.login)
+        self.cancelButton.clicked.connect(self.closeWindow)
+
+    def __getattr__(self, name):
+        return getattr(self.form, name)
+
     def setUsername(self):
         self.usernameBox.setText(self.username)
-        
+
     def login(self):
         username = str(self.usernameBox.text())
         password = str(self.passwordBox.text())
@@ -49,8 +49,8 @@ class Dialog(Form, Base):
             user.login(username, password)
             self.accept()
         except Exception, e:
-            cui.showMessage(self, title='Login', msg=str(e))
-        
+            gui.showMessage(self, title='Login', msg=str(e))
+
     def closeWindow(self):
         self.close()
         self.reject()
