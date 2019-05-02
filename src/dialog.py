@@ -8,7 +8,6 @@ from PySide2.QtCore import QFile, QObject, Slot
 # nebula imports
 from nebula.auth import user
 from nebula.common import gui
-reload(gui)
 
 # python imports
 import os
